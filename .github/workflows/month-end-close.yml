@@ -1,0 +1,44 @@
+name: Month-end close
+
+on:
+  schedule:
+    - cron: "0 6 3 * *"      # 06:00 UTC on the 3rd of every month
+  workflow_dispatch:
+    inputs:
+      period:
+        description: "Period to close (YYYY-MM)"
+        default: "2026-10"
+  push:
+    branches: [main]
+
+jobs:
+  close:
+    runs-on: ubuntu-latest
+    env:
+      PERIOD: ${{ github.event.inputs.period || '2026-10' }}   # demo data covers Jan-Oct 2026
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate synthetic source extracts
+        run: python generate_data.py
+
+      - name: Run tests
+        run: pytest -q
+
+      - name: Run month-end close
+        run: python close.py --period "$PERIOD"
+
+      - name: Upload close pack
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: close-pack-${{ env.PERIOD }}
+          path: output/${{ env.PERIOD }}/

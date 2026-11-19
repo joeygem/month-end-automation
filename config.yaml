@@ -1,0 +1,63 @@
+# Month-end close configuration (fictional company, synthetic data)
+company: Cedar Pay
+functional_currency: USD
+fiscal_year: 2026
+
+paths:
+  raw: data/raw
+  warehouse: data/warehouse.db
+  output: output
+
+generate:
+  first_month: "2026-01"
+  last_month: "2026-10"
+
+# Budget variances are flagged only when BOTH thresholds are breached
+materiality:
+  abs_usd: 5000
+  pct: 0.10
+
+recon_tolerance_usd: 1.0
+
+bank_accounts:
+  1000: {name: "Bank A - USD operating", ccy: USD, file: bankA}
+  1010: {name: "Bank B - EUR account", ccy: EUR, file: bankB}
+
+departments:
+  Operations: OPS
+  Technology: TECH
+  Marketing: MKT
+  Finance: FIN
+  HR: HR
+  Administration: ADMIN
+
+services:            # platform service -> revenue account
+  transfer: 4000
+  bill_pay: 4100
+  fx: 4200
+  topup: 4300
+
+tariff:              # used to impute missing fees on platform records
+  transfer: {pct: 0.02, min_usd: 3.0}
+  bill_pay: {flat_usd: 0.75}
+  topup: {pct: 0.04}
+  fx: {pct: 0.01}
+
+accounts:
+  1000: {name: "Bank A - USD operating", type: asset}
+  1010: {name: "Bank B - EUR account", type: asset}
+  1200: {name: "Settlement receivable", type: asset}
+  3000: {name: "Equity", type: equity}
+  4000: {name: "Money transfer fees", type: revenue, line: Revenue}
+  4100: {name: "Bill payment fees", type: revenue, line: Revenue}
+  4200: {name: "FX margin", type: revenue, line: Revenue}
+  4300: {name: "Mobile top-up commission", type: revenue, line: Revenue}
+  5000: {name: "Agent commissions", type: expense, line: Cost of revenue}
+  5100: {name: "Bank charges", type: expense, line: Cost of revenue}
+  6000: {name: "Salaries & benefits", type: expense, line: Operating expenses}
+  6100: {name: "Rent", type: expense, line: Operating expenses}
+  6200: {name: "IT & software", type: expense, line: Operating expenses}
+  6300: {name: "Marketing", type: expense, line: Operating expenses}
+  6400: {name: "Professional fees", type: expense, line: Operating expenses}
+  6500: {name: "Utilities", type: expense, line: Operating expenses}
+  6600: {name: "Travel", type: expense, line: Operating expenses}

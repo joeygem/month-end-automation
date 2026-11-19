@@ -1,0 +1,96 @@
+{
+  "period": "2026-10",
+  "run_at": "2026-11-19T22:12:22",
+  "seconds": 1.83,
+  "blocking": false,
+  "steps": [
+    {
+      "step": "Load budget & FX rates",
+      "seconds": 0.24,
+      "rows": 240
+    },
+    {
+      "step": "Ingest & validate GL (YTD)",
+      "seconds": 0.262,
+      "rows": 1003
+    },
+    {
+      "step": "Ingest & validate platform transactions",
+      "seconds": 0.485,
+      "rows": 112024
+    },
+    {
+      "step": "Ingest bank statements & payroll",
+      "seconds": 0.017,
+      "rows": 95
+    },
+    {
+      "step": "Run reconciliations",
+      "seconds": 0.087,
+      "rows": 8
+    },
+    {
+      "step": "Build P&L & budget variance",
+      "seconds": 0.032,
+      "rows": 22
+    },
+    {
+      "step": "Write Excel management pack",
+      "seconds": 0.259,
+      "rows": 13
+    },
+    {
+      "step": "Write HTML close summary",
+      "seconds": 0.15,
+      "rows": 2
+    }
+  ],
+  "reconciliations": [
+    {
+      "reconciliation": "Bank A (USD) vs GL 1000",
+      "status": "Reconciled",
+      "gl_balance": 2731781.91,
+      "source_balance": 2793140.76,
+      "adjusted_source": 2726116.77,
+      "adjusted_gl": 2726116.77,
+      "residual": 0.0,
+      "matched": 41,
+      "open_items": 4
+    },
+    {
+      "reconciliation": "Bank B (EUR) vs GL 1010",
+      "status": "Reconciled",
+      "gl_balance": 323579.52,
+      "source_balance": 323399.52,
+      "adjusted_source": 323399.52,
+      "adjusted_gl": 323399.52,
+      "residual": 0.0,
+      "matched": 0,
+      "open_items": 1
+    },
+    {
+      "reconciliation": "Revenue: platform vs GL",
+      "status": "Explained differences",
+      "gl_balance": 354952.59,
+      "source_balance": 354828.4,
+      "adjusted_source": 354828.4,
+      "adjusted_gl": 354828.4,
+      "residual": 0.0,
+      "matched": 2,
+      "open_items": 2
+    },
+    {
+      "reconciliation": "Payroll: register vs GL",
+      "status": "Explained differences",
+      "gl_balance": 135144.09,
+      "source_balance": 139761.09,
+      "adjusted_source": 139761.09,
+      "adjusted_gl": 139761.09,
+      "residual": 0.0,
+      "matched": 5,
+      "open_items": 1
+    }
+  ],
+  "dq_warnings": 6,
+  "dq_errors": 0
+}
